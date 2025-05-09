@@ -22,7 +22,7 @@ public class Cuenta {
     saldo = montoInicial;
   }
 
-  public void poner(double cuanto) {
+  public void depositarDinero(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto);
     }
