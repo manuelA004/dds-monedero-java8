@@ -24,7 +24,7 @@ public class Cuenta {
 
   public void poner(double cuanto) {
     if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+      throw new MontoNegativoException(cuanto);
     }
 
     if (getMovimientos().stream()
@@ -38,7 +38,7 @@ public class Cuenta {
 
   public void sacar(double cuanto) {
     if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto + ": el monto a ingresar debe ser un valor positivo");
+      throw new MontoNegativoException(cuanto);
     }
     if (getSaldo() - cuanto < 0) {
       throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
