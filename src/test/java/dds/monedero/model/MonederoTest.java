@@ -54,7 +54,7 @@ public class MonederoTest {
   void ExtraerMasQueElSaldo() {
     assertThrows(SaldoMenorException.class, () -> {
       cuenta.setSaldo(90);
-      cuenta.sacar(1001);
+      cuenta.retirarDinero(1001);
     });
   }
 
@@ -63,14 +63,14 @@ public class MonederoTest {
   void ExtraerMasDe1000() {
     assertThrows(MaximoExtraccionDiarioException.class, () -> {
       cuenta.setSaldo(5000);
-      cuenta.sacar(1001);
+      cuenta.retirarDinero(1001);
     });
   }
 
   @Test
   @DisplayName("No es posible extraer un monto negativo")
   void ExtraerMontoNegativo() {
-    assertThrows(MontoNegativoException.class, () -> cuenta.sacar(-500));
+    assertThrows(MontoNegativoException.class, () -> cuenta.retirarDinero(-500));
   }
 
 }

@@ -36,7 +36,7 @@ public class Cuenta {
     new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
   }
 
-  public void sacar(double cuanto) {
+  public void retirarDinero(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto);
     }
