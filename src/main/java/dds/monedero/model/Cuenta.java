@@ -60,6 +60,10 @@ public class Cuenta {
   public void chequeaExcepcionesExtraccion(double cuanto) {
     chequearMontoNegativo(cuanto);
 
+    if (saldo - cuanto < 0) {
+      throw new SaldoMenorException(saldo);
+    }
+
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var limite = limiteDiario - montoExtraidoHoy;
     if (cuanto > limite) {
