@@ -17,6 +17,7 @@ public class Cuenta {
 
   public Cuenta() {
     saldo = 0;
+    limiteDiario = 1000;
   }
 
   public Cuenta(double montoInicial, Integer limiteDiario) {
@@ -25,21 +26,23 @@ public class Cuenta {
   }
 
   public void depositarDinero(double cuanto) {
-    chequeatExcepciones(cuanto);
-    new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
+    chequeaExcepciones(cuanto);
+    var movimiento = new Movimiento(LocalDate.now(), cuanto, true);
+    agregarMovimiento(movimiento);
   }
 
   public void retirarDinero(double cuanto) {
-    chequeatExcepciones(cuanto);
-    new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
+    chequeaExcepciones(cuanto);
+    var movimiento = new Movimiento(LocalDate.now(), -cuanto, false);
+    agregarMovimiento(movimiento);
   }
 
-  public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
-    var movimiento = new Movimiento(fecha, cuanto, esDeposito);
+  public void agregarMovimiento(Movimiento movimiento) {
     movimientos.add(movimiento);
+    saldo += movimiento.getMonto();
   }
 
-  public void chequeatExcepciones(double cuanto) {
+  public void chequeaExcepciones(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto);
     }
@@ -58,7 +61,7 @@ public class Cuenta {
   }
 
   public double getMontoExtraidoA(LocalDate fecha) {
-    return getMovimientos().stream()
+    return movimientos.stream()
         .filter(movimiento -> !movimiento.isDeposito() && movimiento.getFecha().equals(fecha))
         .mapToDouble(Movimiento::getMonto)
         .sum();
