@@ -32,7 +32,7 @@ public class Cuenta {
   }
 
   public void retirarDinero(double cuanto) {
-    chequeaExcepcionesIngreso(cuanto);
+    chequeaExcepcionesExtraccion(cuanto);
     var movimiento = new Movimiento(LocalDate.now(), -cuanto, false);
     agregarMovimiento(movimiento);
   }
@@ -57,10 +57,8 @@ public class Cuenta {
     }
 
   }
-  public void chequeaExcepcionesIngreso(double cuanto) {
+  public void chequeaExcepcionesExtraccion(double cuanto) {
     chequearMontoNegativo(cuanto);
-
-
 
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var limite = limiteDiario - montoExtraidoHoy;
