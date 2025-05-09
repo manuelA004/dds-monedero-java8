@@ -46,8 +46,7 @@ public class Cuenta {
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var limite = 1000 - montoExtraidoHoy;
     if (cuanto > limite) {
-      throw new MaximoExtraccionDiarioException(
-          "No puede extraer mas de $ " + 1000 + " diarios, " + "límite: " + limite);
+      throw new MaximoExtraccionDiarioException(1000,limite);
     }
     new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
   }
