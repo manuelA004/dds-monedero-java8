@@ -13,47 +13,48 @@ public class Cuenta {
 
   private double saldo = 0;
   private List<Movimiento> movimientos = new ArrayList<>();
+  private Integer limiteDiario;
 
   public Cuenta() {
     saldo = 0;
   }
 
-  public Cuenta(double montoInicial) {
-    saldo = montoInicial;
+  public Cuenta(double montoInicial, Integer limiteDiario) {
+    this.saldo = montoInicial;
+    this.limiteDiario = limiteDiario;
   }
 
   public void depositarDinero(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto);
-    }
-
-    if (getMovimientos().stream()
-        .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
-        .count() >= 3) {
-      throw new MaximaCantidadDepositosException(3);
-    }
-
+    chequeatExcepciones(cuanto);
     new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
   }
 
   public void retirarDinero(double cuanto) {
-    if (cuanto <= 0) {
-      throw new MontoNegativoException(cuanto);
-    }
-    if (getSaldo() - cuanto < 0) {
-      throw new SaldoMenorException(saldo);
-    }
-    var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
-    var limite = 1000 - montoExtraidoHoy;
-    if (cuanto > limite) {
-      throw new MaximoExtraccionDiarioException(1000,limite);
-    }
+    chequeatExcepciones(cuanto);
     new Movimiento(LocalDate.now(), cuanto, false).agregateA(this);
   }
 
   public void agregarMovimiento(LocalDate fecha, double cuanto, boolean esDeposito) {
     var movimiento = new Movimiento(fecha, cuanto, esDeposito);
     movimientos.add(movimiento);
+  }
+
+  public void chequeatExcepciones(double cuanto) {
+    if (cuanto <= 0) {
+      throw new MontoNegativoException(cuanto);
+    }
+
+    if (movimientos.stream()
+        .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
+        .count() >= 3) {
+      throw new MaximaCantidadDepositosException(3);
+    }
+
+    var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
+    var limite = limiteDiario - montoExtraidoHoy;
+    if (cuanto > limite) {
+      throw new MaximoExtraccionDiarioException(limiteDiario,limite);
+    }
   }
 
   public double getMontoExtraidoA(LocalDate fecha) {
