@@ -21,31 +21,31 @@ public class MonederoTest {
   @Test
   @DisplayName("Es posible poner $1500 en una cuenta vacía")
   void Poner() {
-    cuenta.poner(1500);
+    cuenta.depositarDinero(1500);
   }
 
   @Test
   @DisplayName("No es posible poner montos negativos")
   void PonerMontoNegativo() {
-    assertThrows(MontoNegativoException.class, () -> cuenta.poner(-1500));
+    assertThrows(MontoNegativoException.class, () -> cuenta.depositarDinero(-1500));
   }
 
   @Test
   @DisplayName("Es posible realizar múltiples depósitos consecutivos")
   void TresDepositos() {
-    cuenta.poner(1500);
-    cuenta.poner(456);
-    cuenta.poner(1900);
+    cuenta.depositarDinero(1500);
+    cuenta.depositarDinero(456);
+    cuenta.depositarDinero(1900);
   }
 
   @Test
   @DisplayName("No es posible superar la máxima cantidad de depositos diarios")
   void MasDeTresDepositos() {
     assertThrows(MaximaCantidadDepositosException.class, () -> {
-      cuenta.poner(1500);
-      cuenta.poner(456);
-      cuenta.poner(1900);
-      cuenta.poner(245);
+      cuenta.depositarDinero(1500);
+      cuenta.depositarDinero(456);
+      cuenta.depositarDinero(1900);
+      cuenta.depositarDinero(245);
     });
   }
 

@@ -26,13 +26,13 @@ public class Cuenta {
   }
 
   public void depositarDinero(double cuanto) {
-    chequeaExcepciones(cuanto);
+    chequeaExcepcionesDeposito(cuanto);
     var movimiento = new Movimiento(LocalDate.now(), cuanto, true);
     agregarMovimiento(movimiento);
   }
 
   public void retirarDinero(double cuanto) {
-    chequeaExcepciones(cuanto);
+    chequeaExcepcionesIngreso(cuanto);
     var movimiento = new Movimiento(LocalDate.now(), -cuanto, false);
     agregarMovimiento(movimiento);
   }
@@ -41,17 +41,26 @@ public class Cuenta {
     movimientos.add(movimiento);
     saldo += movimiento.getMonto();
   }
-
-  public void chequeaExcepciones(double cuanto) {
+  public void chequearMontoNegativo(double cuanto) {
     if (cuanto <= 0) {
       throw new MontoNegativoException(cuanto);
     }
+  }
+
+  public void chequeaExcepcionesDeposito(double cuanto) {
+    chequearMontoNegativo(cuanto);
 
     if (movimientos.stream()
         .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
         .count() >= 3) {
       throw new MaximaCantidadDepositosException(3);
     }
+
+  }
+  public void chequeaExcepcionesIngreso(double cuanto) {
+    chequearMontoNegativo(cuanto);
+
+
 
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var limite = limiteDiario - montoExtraidoHoy;
