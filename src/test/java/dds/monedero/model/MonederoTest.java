@@ -26,6 +26,24 @@ public class MonederoTest {
     assertEquals(1500,cuenta.getSaldo());
   }
 
+
+  @Test
+  @DisplayName("Es posible sacar $800 en una cuenta con saldo $1000")
+  void Sacar() {
+    cuenta.setSaldo(1000);
+    cuenta.retirarDinero(800);
+    assertEquals(200,cuenta.getSaldo());
+  }
+
+
+  @Test
+  @DisplayName("Es posible depositar $1000 y luego retirar $800")
+  void PonerYSacar() {
+    cuenta.depositarDinero(1000);
+    cuenta.retirarDinero(800);
+    assertEquals(200,cuenta.getSaldo());
+  }
+
   @Test
   @DisplayName("No es posible poner montos negativos")
   void PonerMontoNegativo() {
@@ -65,7 +83,7 @@ public class MonederoTest {
   @DisplayName("No es posible extraer más que el límite diario")
   void ExtraerMasDe1000() {
     assertThrows(MaximoExtraccionDiarioException.class, () -> {
-      cuenta.setSaldo(0);
+      cuenta.setSaldo(2000);
       cuenta.retirarDinero(1001);
     });
   }
