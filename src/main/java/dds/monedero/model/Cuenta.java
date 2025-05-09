@@ -41,7 +41,7 @@ public class Cuenta {
       throw new MontoNegativoException(cuanto);
     }
     if (getSaldo() - cuanto < 0) {
-      throw new SaldoMenorException("No puede sacar mas de " + getSaldo() + " $");
+      throw new SaldoMenorException(saldo);
     }
     var montoExtraidoHoy = getMontoExtraidoA(LocalDate.now());
     var limite = 1000 - montoExtraidoHoy;
