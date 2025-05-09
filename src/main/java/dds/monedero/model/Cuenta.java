@@ -30,7 +30,7 @@ public class Cuenta {
     if (getMovimientos().stream()
         .filter(movimiento -> movimiento.fueDepositado(LocalDate.now()))
         .count() >= 3) {
-      throw new MaximaCantidadDepositosException("Ya excedio los " + 3 + " depositos diarios");
+      throw new MaximaCantidadDepositosException(3);
     }
 
     new Movimiento(LocalDate.now(), cuanto, true).agregateA(this);
